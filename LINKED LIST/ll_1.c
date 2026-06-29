@@ -119,6 +119,47 @@ struct Node *reverseLL(struct Node *head){
     return head;
 }
 
+
+//.................................
+//SORTING THE LL
+void splitlist(struct Node *head, struct Node **left, struct Node **right){
+    struct Node *slow = head;
+    struct Node *fast = head->next;     // fast starts ahead so mid rounds down
+
+    while(fast!=NULL && fast->next!=NULL){
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    *left  = head;
+    *right = slow->next;
+    slow->next = NULL;
+}
+
+struct Node *merge(struct Node *left, struct Node *right){
+    if(left==NULL)  return right;
+    if(right==NULL) return left;
+
+    if(left->data <= right->data){
+        left->next = merge(left->next, right);
+        return left;
+    } else {
+        right->next = merge(left, right->next);
+        return right;
+    }
+}
+
+struct Node *mergesort(struct Node *head){
+    if(head==NULL || head->next==NULL)
+        return head;
+
+    struct Node *left, *right;
+    splitlist(head, &left, &right);
+    left  = mergesort(left);
+    right = mergesort(right);
+    return merge(left, right);
+}
+//.................................
+
 //INSERT IN SORTED LL
 void sortedinsertion(struct Node **head, int value){
     struct Node *newnode = createNode(value);
@@ -142,14 +183,14 @@ struct Node *sortedinsertionnew(struct Node *head, int value){
 
     if (head==NULL || head->data>=value){
         newnode->next=head;
-        head = newnode;
-        return head;
+        return newnode;
     }
-    while (head->next!=NULL && head->next->data<value){
-        head=head->next;
+    struct Node *temp = head;
+    while (temp->next!=NULL && temp->next->data<value){
+        temp=temp->next;
     }
-    newnode->next = head->next;
-    head->next = newnode;
+    newnode->next = temp->next;
+    temp->next = newnode;
     return head;
 }
 
@@ -175,16 +216,19 @@ int main(){
     head = insertatend(head, 20);
     head = insertatend(head, 80);
     head = insertatend(head, 46);
+    printf("Initial list        : ");
     display(head);
     printf("\n");
 
     head = insertatfront(head, 0);
     head = insertatend(head, 60);
     insertafterpos(head, 80, 40);
+    printf("After insertions    : ");
     display(head);
     printf("\n");
 
     head = deletion(head, 60);
+    printf("After deletion      : ");
     display(head);
     printf("\n");
 
@@ -192,18 +236,27 @@ int main(){
     printf("Recursive counting result = %d\n", recursivecount(head));
     printf("\n");
 
-    printreverseLL(head);
+    printf("Reverse print       : ");
+    printreverseLL(head); printf("NULL\n");
     printf("\n");
 
     head = reverseLL(head);
+    printf("Reversed LL         : ");
+    display(head);
+    printf("\n");
+
+    head = mergesort(head);
+    printf("After mergesort     : ");
     display(head);
     printf("\n");
 
     sortedinsertion(&head, 25);
+    printf("Inserting in sorted list        : ");
     display(head);
     printf("\n");
 
-    sortedinsertionnew(head, 27);
+    head = sortedinsertionnew(head, 27);
+    printf("Inserting in sorted list        : ");
     display(head);
     printf("\n");
 }
