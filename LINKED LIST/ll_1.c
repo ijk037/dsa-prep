@@ -15,24 +15,26 @@ struct Node *createNode(int value){
 }
 
 //NODE INSERTION AT FRONT
-void insertatfront(struct Node **head, int value){
+struct Node *insertatfront(struct Node *head, int value){
     struct Node *newnode = createNode(value);
-    newnode -> next = *head;
-    *head = newnode;
+    newnode -> next = head;
+    head = newnode;
+    return head;
 }
 
 //NODE INSERTION AT END
-void insertatend(struct Node **head, int value){
+struct Node *insertatend(struct Node *head, int value){
     struct Node *newnode = createNode(value);
-    if(*head == NULL){
-        *head = newnode;
-        return;
+    if(head == NULL){
+        head = newnode;
+        return head;
     }
-    struct Node *temp = *head;
+    struct Node *temp = head;
     while(temp->next !=NULL){
         temp = temp->next;
     }
     temp->next = newnode;
+    return head;
 }
 
 //NODE INSERTION AFTER A POSITION
@@ -50,16 +52,16 @@ void insertafterpos(struct Node *head, int key, int value){
 }
 
 //DELETION FROM POSITION
-void deletion(struct Node **head, int key){
-    struct Node *temp = *head;
+struct Node *deletion(struct Node *head, int key){
+    struct Node *temp = head;
     struct Node *prev = NULL;
 
-    if (*head==NULL)
-        return;
+    if (head==NULL)
+        return head;
     if (temp->data ==key){
-        *head = temp->next;
+        head = temp->next;
         free(temp);
-        return;
+        return head;
     }
     while (temp!=NULL && temp->data!=key){
         prev = temp;
@@ -67,10 +69,11 @@ void deletion(struct Node **head, int key){
     }
     if (temp==NULL){
         printf("Element not found!\n");
-        return;
+        return head;
     }
     prev->next = temp->next;
     free(temp);
+    return head;
 }
 
 //ITERATIVE COUNTING
@@ -101,9 +104,9 @@ void printreverseLL(struct Node* head){
 }
 
 //REVERSED LINKED LIST
-void reverseLL(struct Node **head){
+struct Node *reverseLL(struct Node *head){
     struct Node *prev = NULL;
-    struct Node *curr = *head;
+    struct Node *curr = head;
     struct Node *next = NULL;
 
     while (curr!=NULL){
@@ -112,7 +115,8 @@ void reverseLL(struct Node **head){
         prev=curr;
         curr = next;
     }
-    *head = prev;
+    head = prev;
+    return head;
 }
 
 //INSERT IN SORTED LL
@@ -127,9 +131,9 @@ void sortedinsertion(struct Node **head, int value){
     struct Node *temp = *head;
     while (temp->next!=NULL && temp->next->data<value){
         temp=temp->next;
+    }
     newnode->next = temp->next;
     temp->next=newnode;
-    }
 }
 
 
@@ -143,10 +147,10 @@ struct Node *sortedinsertionnew(struct Node *head, int value){
     }
     while (head->next!=NULL && head->next->data<value){
         head=head->next;
+    }
     newnode->next = head->next;
     head->next = newnode;
     return head;
-    }
 }
 
 
@@ -166,35 +170,40 @@ void display(struct Node *head){
 
 
 int main(){
-    createNode(10);
-    createNode(20);
-    createNode(30);
+    struct Node *head = NULL;
 
-    display();
+    head = insertatend(head, 20);
+    head = insertatend(head, 80);
+    head = insertatend(head, 46);
+    display(head);
+    printf("\n");
 
-    insertatfront(0);
-    insertatend(60);
-    insertafterpos(30, 40);
+    head = insertatfront(head, 0);
+    head = insertatend(head, 60);
+    insertafterpos(head, 80, 40);
+    display(head);
+    printf("\n");
 
-    display();
+    head = deletion(head, 60);
+    display(head);
+    printf("\n");
 
-    deletion(60);
+    printf("Iterative counting result = %d\n", iterativecount(head));
+    printf("Recursive counting result = %d\n", recursivecount(head));
+    printf("\n");
 
-    display();
+    printreverseLL(head);
+    printf("\n");
 
-    iterativecount();
-    recursivecount();
+    head = reverseLL(head);
+    display(head);
+    printf("\n");
 
-    printreverseLL();
+    sortedinsertion(&head, 25);
+    display(head);
+    printf("\n");
 
-    reverseLL();
-
-    sortedinsertion();
-
-    display();
-
-    sortedinsertionnew();
-
-    display();
-
+    sortedinsertionnew(head, 27);
+    display(head);
+    printf("\n");
 }
