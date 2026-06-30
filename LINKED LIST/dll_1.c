@@ -44,6 +44,23 @@ struct Node *insertatend(struct Node *head, int value){
 }
 
 //INSERTION AFTER A POSITION
+struct Node *insertafterpos(struct Node *head, int key, int value){
+    struct Node *temp = head;
+    while (temp->next!=NULL && temp->data!=key){
+        temp = temp->next;
+    }
+
+    if (temp==NULL) return head;
+
+    struct Node *newnode = createNode(value);
+    newnode -> next = temp-> next;
+    newnode -> prev = temp;
+    if (temp->next!=NULL){
+        temp->next->prev=newnode;
+    temp->next = newnode;
+    return head;
+    }
+}
 
 
 
@@ -160,6 +177,7 @@ int main(){
 
     head = insertatfront(head, 0);
     head = insertatend(head, 60);
+    head = insertafterpos(head, 30, 24);
     printf("After insertions    : ");
     display(head);
     printf("\n");
