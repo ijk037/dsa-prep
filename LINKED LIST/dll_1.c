@@ -133,6 +133,12 @@ struct Node *reverseLL(struct Node *head){
     return head;
 }
 
+
+
+
+
+
+
 //DISPLAY
 struct Node *display(struct Node *head){
     while (head!=NULL){
