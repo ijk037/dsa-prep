@@ -16,44 +16,47 @@ void largests_sorting(int arr[], int n){
 
 
 //FINDING THE FIRST, SECOND and THIRD LARGEST NUMBER BY WITHOUT SORTING
-int largests_wo_sorting(int arr[], int n){
-    if (n<3);
+void largests_wo_sorting(int arr[], int n){
+    if (n<3){
+        printf("Should at least have 3 numbers");
+        return;
+    }
 
-    int first=arr[0], second=arr[1], third=arr[2];
-    int temp=0;
+    int first=0, second=0, third=0;
 
-    largests_sorting(arr, 3);
-
-    for (int i=3; i<n; i++){
+    for (int i=0; i<n; i++){
+        if (arr[i]<first);
         if (arr[i]>first){
-            temp=arr[i];
+            third=second;
+            second=first;
+            first=arr[i];
         }
         else if (arr[i]>second && arr[i]!=first){
-            temp = arr[i];
+            third=second;
+            second=arr[i];
         }
-        else{
-            temp = arr[i];
+        else if (arr[i]>third && arr[i]!=second && arr[i]!=first){
+            third=arr[i];
         }
     }
-    return temp;
+    printf("\nLargest numbers = %d, %d, %d", first, second, third);
 }
 
 
 int main(){
-    int arr[]={1, 3, 0, 2, 5};
+    int arr[]={3, 4, 2, 3, 1, 5, 2, 4, 6, 7, 8, 8};
     int n = sizeof(arr)/sizeof(arr[0]);
 
     for (int i = 0; i<n; i++){
         printf("%d ", arr[i]);
     }
 
-    largests_sorting(arr, n);
-    printf("\nLargest numbers = %d, %d, %d", arr[0], arr[1], arr[2]);
+    largests_wo_sorting(arr, n);
 
     printf("\nOR");
 
-    int result_2 = largests_wo_sorting(arr, n);
-    printf("\nLargest numbers = %d, %d, %d", result_2, result_2, result_2);
+    largests_sorting(arr, n);
+    printf("\nLargest numbers = %d, %d, %d", arr[0], arr[1], arr[2]);
 
     return 0;
 }
