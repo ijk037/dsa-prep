@@ -14,20 +14,13 @@ void sorting(int arr[], int n){
     }
 }
 
-void merge_2_sorted_arrays(int arr_1[], int n_1, int arr_2[], int n_2, int result[], int n){
-    sorting(arr_1, n_1);
-    sorting(arr_2, n_2);
-
-    int i=0, j=0, k=0;
-
-    while (i<n_1 && j<n_2){
-        if (arr_1[i]<=arr_2[j])
-            result[k++]=arr_1[i++];
-        else
-            result[k++]=arr_1[i++];
+void merge_2_arrays(int arr_1[], int n_1, int arr_2[], int n_2, int result[], int n){
+    for(int i=0; i<n; i++){
+        result[i]=arr_1[i];
     }
-    while (i<n_1) result[k++]=arr_1[i++];
-    while (j<n_2) result[k++]=arr_2[j++];
+    for(int i=0;i<n; i++){
+        result[n_1+i]=arr_2[i];
+    }
     sorting(result, n);
 }
 
@@ -46,10 +39,13 @@ int main(){
     int n=n_1+n_2;
     int result[n];
 
+    printf("\nFirst array : ");
     display_arr(arr_1, n_1);
+    printf("\nSecond array: ");
     display_arr(arr_2, n_2);
 
-    merge_2_sorted_arrays(arr_1, n_1, arr_2, n_2, result, n);
+    merge_2_arrays(arr_1, n_1, arr_2, n_2, result, n);
 
+    printf("\nResult array: ");
     display_arr(result, n);
 }

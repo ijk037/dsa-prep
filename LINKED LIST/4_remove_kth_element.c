@@ -44,10 +44,12 @@ struct Node *removing_kth_element(struct Node *head, int k){
         return head;
     }
 
-    temp->next=temp->next->next;
-    head->next=temp;
 
-    display(head);
+    struct Node *to_delete = temp->next;
+    temp->next = to_delete->next;
+    free(to_delete);
+
+    return head;
 }
 
 int main(){
